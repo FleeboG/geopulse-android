@@ -5,24 +5,23 @@ on:
   push:
     branches: ["main"]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java (for Gradle)
+      - name: Set up Java for Gradle
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
 
-      - name: Build & unit tests (auto-skips until Gradle wrapper exists)
+      - name: Build and unit tests
         run: |
-          if [ -f ./gradlew ]; then
-            chmod +x ./gradlew
-            ./gradlew --version
-            ./gradlew clean testDebugUnitTest assembleDebug
-          else
-            echo "gradlew not found yet — skipping Android build (will run once Android project is added)"
-          fi
+          chmod +x ./gradlew
+          ./gradlew --version
+          ./gradlew clean testDebugUnitTest assembleDebug
