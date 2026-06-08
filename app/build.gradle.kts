@@ -66,4 +66,20 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+
+    // Retrofit + JSON
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // OkHttp logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // DataStore for JWT storage
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Lifecycle / ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 }
