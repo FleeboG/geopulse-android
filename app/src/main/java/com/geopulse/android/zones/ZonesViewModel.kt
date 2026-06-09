@@ -33,4 +33,35 @@ class ZonesViewModel(
             }
         }
     }
+
+    fun createZone(
+        token: String,
+        name: String,
+        latitude: Double,
+        longitude: Double,
+        radiusM: Double,
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                _error.value = null
+
+                repository.createZone(
+                    token = token,
+                    name = name,
+                    latitude = latitude,
+                    longitude = longitude,
+                    radiusM = radiusM
+                )
+
+                loadZones(token)
+                onSuccess()
+            } catch (e: Exception) {
+                _error.value = e.message
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
 }

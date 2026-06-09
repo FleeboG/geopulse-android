@@ -17,6 +17,12 @@ fun ZonesScreen(
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
 
+    var showCreateForm by remember { mutableStateOf(false) }
+    var name by remember { mutableStateOf("") }
+    var latitude by remember { mutableStateOf("36.1867") }
+    var longitude by remember { mutableStateOf("-94.1288") }
+    var radiusM by remember { mutableStateOf("150") }
+
     LaunchedEffect(token) {
         viewModel.loadZones(token)
     }
@@ -29,6 +35,75 @@ fun ZonesScreen(
         Text("Zones", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { showCreateForm = !showCreateForm },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(if (showCreateForm) "Cancel" else "+ Create Zone")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (showCreateForm) {
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Zone name") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = latitude,
+                onValueChange = { latitude = it },
+                label = { Text("Latitude") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = longitude,
+                onValueChange = { longitude = it },
+                label = { Text("Longitude") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = radiusM,
+                onValueChange = { radiusM = it },
+                label = { Text("Radius meters") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {
+                    viewModel.createZone(
+                        token = token,
+                        name = name,
+                        latitude = latitude.toDoubleOrNull() ?: 0.0,
+                        longitude = longitude.toDoubleOrNull() ?: 0.0,
+                        radiusM = radiusM.toDoubleOrNull() ?: 0.0,
+                        onSuccess = {
+                            showCreateForm = false
+                            name = ""
+                        }
+                    )
+                },
+                enabled = !loading,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Save Zone")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
         if (loading) {
             CircularProgressIndicator()

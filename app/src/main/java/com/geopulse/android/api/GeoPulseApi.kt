@@ -17,6 +17,12 @@ interface GeoPulseApi {
         @Body request: LoginRequest
     ): AuthResponse
 
+    @POST("api/v1/zones")
+    suspend fun createZone(
+        @Header("Authorization") authorization: String,
+        @Body request: ZoneCreateRequest
+    ): ZoneResponse
+
     @GET("api/v1/zones")
     suspend fun getZones(
         @Header("Authorization") authorization: String
