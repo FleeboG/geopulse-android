@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.geopulse.android.storage.TokenStore
 
 class AuthViewModel(
-    private val repository: AuthRepository = AuthRepository()
+    private val repository: AuthRepository = AuthRepository(),
+    private val tokenStore: TokenStore
 ) : ViewModel() {
 
     private val _loading = MutableStateFlow(false)
@@ -26,6 +28,8 @@ class AuthViewModel(
                 _error.value = null
 
                 val token = repository.login(email, password)
+
+                tokenStore.saveToken(token)
 
                 _token.value = token
 
