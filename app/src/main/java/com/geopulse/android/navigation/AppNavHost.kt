@@ -16,6 +16,7 @@ import com.geopulse.android.auth.LoginScreen
 import com.geopulse.android.auth.RegisterScreen
 import com.geopulse.android.storage.TokenStore
 import com.geopulse.android.zones.ZonesScreen
+import com.geopulse.android.events.EventHistoryScreen
 
 @Composable
 fun AppNavHost() {
@@ -71,7 +72,22 @@ fun AppNavHost() {
             if (currentToken == null) {
                 Text("Missing token. Please log in again.")
             } else {
-                ZonesScreen(token = currentToken)
+                ZonesScreen(
+                    token = currentToken,
+                    onGoToEvents = {
+                        navController.navigate(Routes.EVENTS)
+                    }
+                )
+            }
+        }
+
+        composable(Routes.EVENTS) {
+            val currentToken = token
+
+            if (currentToken == null) {
+                Text("Missing token. Please log in again.")
+            } else {
+                EventHistoryScreen(token = currentToken)
             }
         }
     }

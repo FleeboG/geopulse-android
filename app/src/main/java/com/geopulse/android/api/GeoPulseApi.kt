@@ -27,4 +27,9 @@ interface GeoPulseApi {
     suspend fun getZones(
         @Header("Authorization") authorization: String
     ): List<ZoneResponse>
+
+    @GET("api/v1/events")
+    suspend fun getEvents(
+        @Header("Authorization") authorization: String
+    ): EventPageResponse
 }

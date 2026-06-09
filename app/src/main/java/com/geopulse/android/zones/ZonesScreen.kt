@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ZonesScreen(
     token: String,
+    onGoToEvents: () -> Unit,
     viewModel: ZonesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val zones by viewModel.zones.collectAsState()
@@ -104,6 +105,17 @@ fun ZonesScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedButton(
+            onClick = onGoToEvents,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("View Event History")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (loading) {
             CircularProgressIndicator()
