@@ -23,6 +23,12 @@ interface GeoPulseApi {
         @Body request: ZoneCreateRequest
     ): ZoneResponse
 
+    @POST("api/v1/events")
+    suspend fun createEvent(
+        @Header("Authorization") authorization: String,
+        @Body request: EventCreateRequest
+    ): EventResponse
+
     @GET("api/v1/zones")
     suspend fun getZones(
         @Header("Authorization") authorization: String
@@ -32,4 +38,6 @@ interface GeoPulseApi {
     suspend fun getEvents(
         @Header("Authorization") authorization: String
     ): EventPageResponse
+
+
 }

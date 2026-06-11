@@ -3,6 +3,7 @@ package com.geopulse.android.events
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.geopulse.android.api.EventResponse
+import com.geopulse.android.location.LocationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -25,6 +26,32 @@ class EventsViewModel(
             try {
                 _loading.value = true
                 _error.value = null
+                _events.value = repository.getEvents(token)
+            } catch (e: Exception) {
+                _error.value = e.message
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun sendCurrentLocation(
+        token: String,
+        locationRepository: LocationRepository
+    ) {
+        viewModelScope.launch {
+            try {
+                _loading.value = true
+                _error.value = null
+
+                val (latitude, longitude) = locationRepository.getCurrentLocation()
+
+                repository.createEvent(
+                    token = token,
+                    latitude = latitude,
+                    longitude = longitude
+                )
+
                 _events.value = repository.getEvents(token)
             } catch (e: Exception) {
                 _error.value = e.message
