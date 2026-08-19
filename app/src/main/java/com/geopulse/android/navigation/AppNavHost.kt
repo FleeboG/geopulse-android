@@ -17,12 +17,16 @@ import com.geopulse.android.auth.RegisterScreen
 import com.geopulse.android.storage.TokenStore
 import com.geopulse.android.zones.ZonesScreen
 import com.geopulse.android.events.EventHistoryScreen
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val tokenStore = TokenStore(context)
+
+    val storedToken by tokenStore.token.collectAsState(initial = null)
 
     val authViewModel: AuthViewModel = viewModel(
         factory = viewModelFactory {
@@ -34,9 +38,27 @@ fun AppNavHost() {
 
     val token by authViewModel.token.collectAsState()
 
+    LaunchedEffect(storedToken) {
+        if (storedToken != null && token == null) {
+            authViewModel.setToken(storedToken!!)
+        }
+
+        if (storedToken != null) {
+            navController.navigate(Routes.HOME) {
+                popUpTo(Routes.SPLASH) { inclusive = true }
+                launchSingleTop = true
+            }
+        } else {
+            navController.navigate(Routes.LOGIN) {
+                popUpTo(Routes.SPLASH) { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Routes.LOGIN
+        startDestination = Routes.SPLASH
     ) {
         composable(Routes.LOGIN) {
             LoginScreen(
@@ -89,6 +111,10 @@ fun AppNavHost() {
             } else {
                 EventHistoryScreen(token = currentToken)
             }
+        }
+
+        composable(Routes.SPLASH) {
+            CircularProgressIndicator()
         }
     }
 }

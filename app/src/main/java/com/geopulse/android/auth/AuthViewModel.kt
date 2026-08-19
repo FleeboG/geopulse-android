@@ -56,4 +56,7 @@ class AuthViewModel(
             }
         }
     }
+    fun setToken(token: String) {
+        _token.value = token
+    }
 }
