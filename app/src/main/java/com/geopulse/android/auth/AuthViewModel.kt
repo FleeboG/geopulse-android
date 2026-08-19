@@ -59,4 +59,12 @@ class AuthViewModel(
     fun setToken(token: String) {
         _token.value = token
     }
+
+    fun logout(onComplete: () -> Unit) {
+        viewModelScope.launch {
+            tokenStore.clearToken()
+            _token.value = null
+            onComplete()
+        }
+    }
 }

@@ -98,6 +98,16 @@ fun AppNavHost() {
                     token = currentToken,
                     onGoToEvents = {
                         navController.navigate(Routes.EVENTS)
+                    },
+                    onLogout = {
+                        authViewModel.logout {
+                            navController.navigate(Routes.LOGIN) {
+                                popUpTo(Routes.HOME) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }
                     }
                 )
             }

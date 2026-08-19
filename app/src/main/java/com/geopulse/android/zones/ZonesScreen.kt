@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 fun ZonesScreen(
     token: String,
     onGoToEvents: () -> Unit,
+    onLogout: () -> Unit,
     viewModel: ZonesViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val zones by viewModel.zones.collectAsState()
@@ -113,6 +114,15 @@ fun ZonesScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("View Event History")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(
+            onClick = onLogout,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Logout")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
